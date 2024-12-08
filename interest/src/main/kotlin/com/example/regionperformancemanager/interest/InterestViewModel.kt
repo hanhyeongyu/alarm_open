@@ -8,6 +8,7 @@ import com.example.regionperformancemanager.region.model.Region
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,12 +18,13 @@ class InterestViewModel @Inject constructor(
     private val followApplication: FollowApplication
 ): ViewModel(){
 
-    val regions: StateFlow<List<FollowableRegion>> = followApplication.followableRegion().stateIn(
-        scope = viewModelScope,
-        initialValue = emptyList(),
-        started = SharingStarted.WhileSubscribed(5_000),
-    )
-
+    val interestUiState: StateFlow<InterestUiState> = followApplication.followableRegion()
+        .map(InterestUiState::Success)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = InterestUiState.Loading,
+        )
 
     fun setFollowing(region: Region, isFollowing: Boolean){
         viewModelScope.launch {
@@ -33,7 +35,13 @@ class InterestViewModel @Inject constructor(
             }
         }
     }
-
 }
+
+
+sealed interface InterestUiState{
+    data object Loading: InterestUiState
+    data class Success(val regions: List<FollowableRegion>): InterestUiState
+}
+
 
 

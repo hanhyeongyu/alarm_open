@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.regionperformancemanager.follow.model.FollowableRegion
 import com.example.regionperformancemanager.region.model.Region
 import com.example.template.core.designsystem.component.AppBackground
+import com.example.template.core.designsystem.component.AppLoadingWheel
 import com.example.template.core.designsystem.component.scrollbar.DraggableScrollbar
 import com.example.template.core.designsystem.component.scrollbar.rememberDraggableScroller
 import com.example.template.core.designsystem.component.scrollbar.scrollbarState
@@ -36,10 +38,10 @@ fun InterestRoute(
     viewModel: InterestViewModel = hiltViewModel()
 ){
 
-    val regions by viewModel.regions.collectAsStateWithLifecycle()
+    val interestUiState by viewModel.interestUiState.collectAsStateWithLifecycle()
 
     InterestScreen(
-        regions = regions,
+        interestUiState = interestUiState,
         onFollowClick = viewModel::setFollowing,
         modifier = modifier
     )
@@ -48,15 +50,27 @@ fun InterestRoute(
 
 @Composable
 fun InterestScreen(
-    regions: List<com.example.regionperformancemanager.follow.model.FollowableRegion>,
+    interestUiState: InterestUiState,
     onFollowClick: (region: Region, isFollowing: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ){
-    RegionsContent(
-        regions = regions,
-        onFollowClick = onFollowClick,
-        modifier = modifier
-    )
+    when(interestUiState){
+        InterestUiState.Loading -> {
+            AppLoadingWheel(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(),
+                contentDesc = "Loading interests…"
+            )
+        }
+        is InterestUiState.Success ->
+            RegionsContent(
+                regions = interestUiState.regions,
+                onFollowClick = onFollowClick,
+                modifier = modifier
+            )
+    }
+
 }
 
 
@@ -118,16 +132,26 @@ fun RegionScreenPreview(){
     AppTheme {
         AppBackground {
             InterestScreen(
-                regions = listOf(
-                    com.example.regionperformancemanager.follow.model.FollowableRegion(
-                        true,
-                        Region(
-                            id = 1,
-                            name = "Seoul",
-                            imageUrl = ""
-                        )
-                    )
-                ),
+                interestUiState = InterestUiState.Success(
+                    listOf(
+                        FollowableRegion(
+                            true,
+                            Region(id = 1, name = "Seoul", imageUrl = ""
+                    ))
+                )),
+                onFollowClick = { _, _ -> }
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun RegionScreenLoadingPreview(){
+    AppTheme {
+        AppBackground {
+            InterestScreen(
+                interestUiState = InterestUiState.Loading,
                 onFollowClick = { _, _ -> }
             )
         }

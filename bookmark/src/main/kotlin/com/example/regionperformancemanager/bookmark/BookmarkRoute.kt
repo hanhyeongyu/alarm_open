@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -42,6 +43,7 @@ import com.example.regionperformancemanager.performance.PerformanceItem
 import com.example.regionperformancemanager.performance.launchCustomChromeTab
 import com.example.regionperformancemanager.performance.model.Performance
 import com.example.template.core.designsystem.component.AppBackground
+import com.example.template.core.designsystem.component.AppLoadingWheel
 import com.example.template.core.designsystem.component.scrollbar.DraggableScrollbar
 import com.example.template.core.designsystem.component.scrollbar.rememberDraggableScroller
 import com.example.template.core.designsystem.component.scrollbar.scrollbarState
@@ -54,10 +56,10 @@ fun BookmarkRoute(
     modifier: Modifier = Modifier,
     viewModel: BookmarkViewModel = hiltViewModel()
 ){
-    val bookmarks by viewModel.performances.collectAsStateWithLifecycle()
+    val bookmarkUiState by viewModel.bookmarkUiState.collectAsStateWithLifecycle()
 
     BookmarkScreen(
-        bookmarks = bookmarks,
+        bookmarkUiState = bookmarkUiState,
         onBookmarkChange = viewModel::setBookmark,
         modifier = modifier
     )
@@ -66,26 +68,40 @@ fun BookmarkRoute(
 
 @Composable
 fun BookmarkScreen(
-    bookmarks: List<Performance>,
+    bookmarkUiState: BookmarkUiState,
     onBookmarkChange: (Performance, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ){
 
-    if (bookmarks.isEmpty()){
-        EmptyState(modifier = modifier)
-    }else{
-        BookmarksGrid(
-            bookmarks = bookmarks,
-            onBookmarkChange = onBookmarkChange,
-            modifier = modifier
-        )
+    when(bookmarkUiState){
+        BookmarkUiState.Loading -> {
+            AppLoadingWheel(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(),
+                contentDesc = "Loading bookmarks…"
+            )
+        }
+        is BookmarkUiState.Success -> {
+            val performances = bookmarkUiState.performances
+            if (performances.isEmpty()){
+                EmptyState(modifier = modifier)
+            }else{
+                BookmarksGrid(
+                    performances = performances,
+                    onBookmarkChange = onBookmarkChange,
+                    modifier = modifier
+                )
+            }
+        }
     }
+
 
 }
 
 @Composable
 fun BookmarksGrid(
-    bookmarks: List<Performance>,
+    performances: List<Performance>,
     onBookmarkChange: (Performance, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ){
@@ -108,7 +124,7 @@ fun BookmarksGrid(
                 state = scrollableState,
             ){
                 performances(
-                    performances = bookmarks,
+                    performances = performances,
                     onPerformanceClick = { performance ->
                         if (performance.homePageUrl.isNotEmpty()){
                             launchCustomChromeTab(
@@ -122,7 +138,7 @@ fun BookmarksGrid(
                 )
             }
 
-            val itemsAvailable = bookmarks.count()
+            val itemsAvailable = performances.count()
             val scrollbarState = scrollableState.scrollbarState(
                 itemsAvailable = itemsAvailable,
             )
@@ -149,7 +165,7 @@ fun LazyStaggeredGridScope.performances(
 ){
     items(
         items = performances,
-        key = { it.id!! },
+        key = { it.id },
         contentType = { "performanceItem" },
     ){ performance ->
         PerformanceItem(
@@ -200,24 +216,23 @@ private fun EmptyState(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun BookmarksGridPreview(
+private fun BookmarksLoadingPreview(
 ) {
     AppTheme {
-        BookmarksGrid(
-            bookmarks = emptyList(),
-            onBookmarkChange = { _, _ -> }
-        )
+        AppBackground {
+            BookmarkScreen(
+                bookmarkUiState = BookmarkUiState.Loading,
+                onBookmarkChange = {  _, _ ->},
+            )
+        }
     }
 }
+
 
 @Preview
 @Composable
 private fun EmptyStatePreview() {
-    AppTheme(
-        darkTheme = true,
-        androidTheme = true,
-        disableDynamicTheming = true
-    ){
+    AppTheme(){
         AppBackground {
             EmptyState()
         }

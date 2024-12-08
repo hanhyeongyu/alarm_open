@@ -27,11 +27,12 @@ class ForYouViewModel @Inject constructor(
     private val followApplication: FollowApplication,
     private val favoriteApplication: FavoriteApplication
 ): ViewModel(){
-    val feed: StateFlow<List<Feed>> = feedApplication.feeds()
+    val feedUiState: StateFlow<FeedUiState> = feedApplication.feeds()
+        .map(FeedUiState::Success)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList()
+            initialValue = FeedUiState.Loading
         )
 
     val onboardingUiState: StateFlow<OnboardingUiState> =
@@ -83,6 +84,10 @@ class ForYouViewModel @Inject constructor(
     private fun shouldShowOnboarding(): Flow<Boolean> = userPreferencesDataSource.userData.map {
         !it.shouldHideOnboarding
     }
+}
 
 
+sealed interface FeedUiState{
+    data object Loading: FeedUiState
+    data class Success(val feeds: List<Feed>): FeedUiState
 }

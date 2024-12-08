@@ -5,5 +5,6 @@
     <string name="forYou_onboarding_title">어느 지역의 행사, 공연에 관심이 있으시나요?</string>
     <string name="forYou_onboarding_subTitle">팔로우하는 지역의 정보가 여기에 표시됩니다.\n시작하려면 몇 가지를 팔로우하세요.</string>
     <string name="forYou_onboarding_submit">완료</string>
+    <string name="forYou_loading">Loading for you…</string>
 </resources>
 
