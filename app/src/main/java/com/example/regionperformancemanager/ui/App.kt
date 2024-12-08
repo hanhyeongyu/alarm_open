@@ -48,6 +48,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.regionperformancemanager.R
 import com.example.regionperformancemanager.navigation.AppNavHost
+import com.example.regionperformancemanager.navigation.TopLevelDestination
 import com.example.template.core.designsystem.component.AppBackground
 import com.example.template.core.designsystem.component.AppGradientBackground
 import com.example.template.core.designsystem.component.AppNavigationSuiteScaffold
@@ -67,9 +68,8 @@ fun App(
     modifier: Modifier = Modifier,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ){
-    val shouldShowGradientBackground = true
-    //appState.currentTopLevelDestination == TopLevelDestination.HOME
-
+    val shouldShowGradientBackground =
+        appState.currentTopLevelDestination == TopLevelDestination.FORYOU
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
 
     AppBackground {
@@ -190,7 +190,7 @@ internal fun App(
                 if (destination != null) {
                     shouldShowTopAppBar = true
                     AppTopAppBar(
-                        titleRes = settingsR.string.settings_title,
+                        titleRes = destination.titleTextId,
                         navigationIcon = AppIcons.Search,
                         navigationIconContentDescription = stringResource(
                             id = settingsR.string.settings_top_app_bar_navigation_icon_description,

@@ -33,10 +33,10 @@ android {
             applicationIdSuffix = TemplateBuildType.RELEASE.applicationIdSuffix
 
 
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
         }
     }
 
@@ -67,6 +67,11 @@ dependencies {
     implementation(projects.user)
     implementation(projects.settings)
 
+    implementation(projects.foryou)
+    implementation(projects.performance)
+    implementation(projects.bookmark)
+    implementation(projects.interest)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
@@ -92,6 +97,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(libs.coil.kt)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

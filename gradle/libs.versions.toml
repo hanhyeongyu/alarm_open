@@ -11,6 +11,7 @@ androidxLifecycle = "2.8.7"
 androidxHiltNavigationCompose = "1.2.0"
 androidxNavigation = "2.8.0"
 androidxMetrics = "1.0.0-beta01"
+androidxBrowser = "1.8.0"
 
 agp = "8.7.2"
 appcompat = "1.7.0"
@@ -73,7 +74,7 @@ androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime
 androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidxTracing" }
 androidx-dataStore = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto-ktx" , version.ref = "androidxSecurityCrypto"}
-
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
 
 
 

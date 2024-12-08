@@ -55,7 +55,7 @@ internal object NetworkModule {
     @Singleton
     fun imageLoader(
         // We specifically request dagger.Lazy here, so that it's not instantiated from Dagger.
-        okHttpCallFactory: dagger.Lazy<Call.Factory>,
+        @Api okHttpCallFactory: dagger.Lazy<Call.Factory>,
         @ApplicationContext application: Context,
     ): ImageLoader = trace("TemplateImageLoader") {
         ImageLoader.Builder(application)

@@ -52,15 +52,15 @@ fun AppTopAppBar(
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },
-        navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
-                Icon(
-                    imageVector = navigationIcon,
-                    contentDescription = navigationIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-        },
+//        navigationIcon = {
+//            IconButton(onClick = onNavigationClick) {
+//                Icon(
+//                    imageVector = navigationIcon,
+//                    contentDescription = navigationIconContentDescription,
+//                    tint = MaterialTheme.colorScheme.onSurface,
+//                )
+//            }
+//        },
         actions = {
             IconButton(onClick = onActionClick) {
                 Icon(

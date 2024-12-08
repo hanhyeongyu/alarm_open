@@ -28,4 +28,8 @@ message UserPreferences {
     DarkThemeConfigProto dark_theme_config = 3;
     bool useDynamicColor = 4;
     bool authenticated = 5;
+
+    bool should_hide_onboarding = 6;
+    map<string, bool> followed_region_ids = 7;
+    map<string, bool> bookmarked_performances_ids = 8;
 }

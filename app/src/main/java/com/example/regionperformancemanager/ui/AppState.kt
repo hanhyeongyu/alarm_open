@@ -27,6 +27,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.example.regionperformancemanager.bookmark.navigateToBookmarks
+import com.example.regionperformancemanager.foryou.navigateToForYou
+import com.example.regionperformancemanager.interest.navigateToInterest
 import com.example.regionperformancemanager.navigation.TopLevelDestination
 import com.example.template.core.network.monitor.NetworkMonitor
 import com.example.template.core.network.monitor.TimeZoneMonitor
@@ -134,9 +137,11 @@ class AppState(
             restoreState = true
         }
 
-//        when (topLevelDestination) {
-//            Home -> navController.navigateToHome(homeNavOptions)
-//        }
+        when (topLevelDestination) {
+            TopLevelDestination.FORYOU -> navController.navigateToForYou(topLevelNavOptions)
+            TopLevelDestination.BOOKMARK -> navController.navigateToBookmarks(topLevelNavOptions)
+            TopLevelDestination.REGION -> navController.navigateToInterest(topLevelNavOptions)
+        }
     }
 
 }

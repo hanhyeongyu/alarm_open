@@ -19,6 +19,10 @@ package com.example.regionperformancemanager.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.example.regionperformancemanager.bookmark.bookmarksScreen
+import com.example.regionperformancemanager.foryou.ForYouRoute
+import com.example.regionperformancemanager.foryou.forYouScreen
+import com.example.regionperformancemanager.interest.interestScreen
 import com.example.regionperformancemanager.ui.AppState
 
 /**
@@ -38,8 +42,19 @@ fun AppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = "PerformanceRoute",
+        startDestination = ForYouRoute,
         modifier = modifier,
     ) {
+        forYouScreen(
+            onShowSnackbar = onShowSnackbar
+        )
+
+        bookmarksScreen(
+            onShowSnackbar = onShowSnackbar
+        )
+
+        interestScreen(
+            onShowSnackbar = onShowSnackbar
+        )
     }
 }

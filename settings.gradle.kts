@@ -34,3 +34,15 @@ include(":core:notification")
 
 include(":settings")
 include(":user")
+
+include(":foryou")
+include(":bookmark")
+include(":interest")
+
+include(":follow")
+include(":favorite")
+
+include(":performance")
+include(":region")
+
+include(":calendar")

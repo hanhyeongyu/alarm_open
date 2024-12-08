@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 
 @HiltAndroidApp
-class RegionPerformanceApplication: Application(), ImageLoaderFactory {
+class TemplateApplication: Application(), ImageLoaderFactory {
 
     @Inject
     lateinit var imageLoader: dagger.Lazy<ImageLoader>

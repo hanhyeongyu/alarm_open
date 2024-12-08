@@ -49,7 +49,10 @@ class UserPreferencesDataSource @Inject constructor(
                 DarkThemeConfigProto.DARK_THEME_CONFIG_DARK -> DarkTheme.DARK
             },
             useDynamicColor = it.useDynamicColor,
-            authenticated = it.authenticated
+            authenticated = it.authenticated,
+            shouldHideOnboarding = it.shouldHideOnboarding,
+            followedRegions = it.followedRegionIdsMap.keys,
+            bookmarkedPerformances = it.bookmarkedPerformancesIdsMap.keys
         )
     }
 
@@ -99,5 +102,50 @@ class UserPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setShouldHideOnboarding(shouldHideOnboarding: Boolean){
+        userPreferences.updateData {
+            it.copy { this.shouldHideOnboarding = shouldHideOnboarding }
+        }
+    }
 
+
+    suspend fun setRegionIdFollowed(regionId: String, followed: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    if (followed) {
+                        followedRegionIds.put(regionId, true)
+                    } else {
+                        followedRegionIds.remove(regionId)
+                    }
+                    updateShouldHideOnboardingIfNecessary()
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("TemplatePreferences", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setPerformanceBookmarked(bookmarkId: String, bookmarked: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    if (bookmarked) {
+                        bookmarkedPerformancesIds.put(bookmarkId, true)
+                    } else {
+                        bookmarkedPerformancesIds.remove(bookmarkId)
+                    }
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("NiaPreferences", "Failed to update user preferences", ioException)
+        }
+    }
+
+}
+
+private fun UserPreferencesKt.Dsl.updateShouldHideOnboardingIfNecessary() {
+    if (followedRegionIds.isEmpty()) {
+        shouldHideOnboarding = false
+    }
 }

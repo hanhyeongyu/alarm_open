@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">RegionPerformanceManager</string>
+    <string name="app_name">지역행사알리미</string>
     <string name="not_connected">⚠️ You aren’t connected to the internet</string>
 </resources>

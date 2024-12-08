@@ -5,7 +5,10 @@ data class UserData(
     val themeBrand: ThemeBrand,
     val darkTheme: DarkTheme,
     val useDynamicColor: Boolean,
-    val authenticated: Boolean
+    val authenticated: Boolean,
+    val shouldHideOnboarding: Boolean,
+    val followedRegions: Set<String>,
+    val bookmarkedPerformances: Set<String>
 )
 
 enum class ThemeBrand {

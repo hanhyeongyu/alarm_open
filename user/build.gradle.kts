@@ -12,5 +12,4 @@ dependencies{
     implementation(projects.core.common)
     implementation(projects.core.network)
     implementation(projects.core.auth)
-    implementation(projects.core.datastore)
 }

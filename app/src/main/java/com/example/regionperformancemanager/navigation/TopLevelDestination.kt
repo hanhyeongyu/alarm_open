@@ -18,8 +18,14 @@ package com.example.regionperformancemanager.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.regionperformancemanager.bookmark.BookmarkRoute
+import com.example.regionperformancemanager.foryou.ForYouRoute
+import com.example.regionperformancemanager.interest.InterestRoute
+import com.example.template.core.designsystem.icon.AppIcons
 import kotlin.reflect.KClass
-
+import com.example.regionperformancemanager.bookmark.R as bookmarkR
+import com.example.regionperformancemanager.foryou.R as forYouR
+import com.example.regionperformancemanager.interest.R as regionR
 
 /**
  * Type for the top level destinations in the application. Contains metadata about the destination
@@ -43,5 +49,27 @@ enum class TopLevelDestination(
     val route: KClass<*>,
     val baseRoute: KClass<*> = route,
 ) {
+    FORYOU(
+        selectedIcon = AppIcons.News,
+        unselectedIcon = AppIcons.NewsBorder,
+        iconTextId = forYouR.string.forYou_title,
+        titleTextId = forYouR.string.forYou_title,
+        route = ForYouRoute::class,
+    ),
 
+    BOOKMARK(
+        selectedIcon = AppIcons.Bookmarks,
+        unselectedIcon = AppIcons.BookmarksBorder,
+        iconTextId = bookmarkR.string.bookmark_title,
+        titleTextId = bookmarkR.string.bookmark_title,
+        route = BookmarkRoute::class,
+    ),
+
+    REGION(
+        selectedIcon = AppIcons.AddLocation,
+        unselectedIcon = AppIcons.AddLocationBorder,
+        iconTextId = regionR.string.interest_title,
+        titleTextId = regionR.string.interest_title,
+        route = InterestRoute::class,
+    )
 }

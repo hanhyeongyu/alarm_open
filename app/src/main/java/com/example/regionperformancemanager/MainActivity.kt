@@ -22,7 +22,6 @@ import com.example.regionperformancemanager.MainActivityUiState.Loading
 import com.example.regionperformancemanager.MainActivityUiState.Success
 import com.example.regionperformancemanager.ui.App
 import com.example.regionperformancemanager.ui.rememberAppState
-import com.example.template.auth.AuthScreen
 import com.example.template.core.datastore.DarkTheme
 import com.example.template.core.datastore.ThemeBrand
 import com.example.template.core.designsystem.theme.AppTheme
@@ -117,15 +116,11 @@ class MainActivity : ComponentActivity() {
                 LocalTimeZone provides currentTimeZone,
             ){
                 AppTheme(
-                    darkTheme = darkTheme,
+                    darkTheme = darkTheme,   //darkTheme,
                     androidTheme = shouldUseAndroidTheme(uiState),
-                    disableDynamicTheming = shouldDisableDynamicTheming(uiState),
+                    disableDynamicTheming = shouldDisableDynamicTheming(uiState)
                 ) {
-                    if(authenticated(uiState)){
-                        App(appState)
-                    }else{
-                        AuthScreen()
-                    }
+                    App(appState)
                 }
             }
         }
